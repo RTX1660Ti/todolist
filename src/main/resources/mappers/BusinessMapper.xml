@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.todo.domain.dao.BusinessMapper">
+    <resultMap id="BaseResultMap" type="org.example.todo.domain.entity.Business">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="user_id" jdbcType="BIGINT" property="userId" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="isEnd" jdbcType="BOOLEAN" property="isEnd" />
+        <result column="isDelete" jdbcType="BOOLEAN" property="isDelete" />
+        <result column="business_time" jdbcType="BIGINT" property="businessTime" />
+        <result column="create_time" jdbcType="BIGINT" property="createTime" />
+        <result column="update_time" jdbcType="BIGINT" property="updateTime" />
+    </resultMap>
+    <select id="selectById" resultMap="BaseResultMap">
+        select  *
+        from t_business
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectList" parameterType="org.example.todo.bean.dto.BusinessQueryDto" resultMap="BaseResultMap">
+        SELECT *
+        FROM
+        t_business
+        WHERE isDelete = #{isDelete,jdbcType=BOOLEAN}
+        and user_id = #{userId,jdbcType=BIGINT}
+        <if test="isEnd != null">
+            and isEnd=#{isEnd,jdbcType=BOOLEAN}
+        </if>
+        <if test="businessStartTime != null">
+            and business_time &gt;= #{businessStartTime,jdbcType=BIGINT}
+        </if>
+        <if test="businessEndTime != null">
+            and business_time &lt;= #{businessEndTime,jdbcType=BIGINT}
+        </if>
+    </select>
+
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="org.example.todo.domain.entity.Business" useGeneratedKeys="true">
+        insert into t_business
+            (id,user_id,description,isEnd,isDelete,business_time,create_time,update_time)
+        values
+        (#{id,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, #{description,jdbcType=VARCHAR},
+        #{isEnd,jdbcType=BOOLEAN},#{isDelete,jdbcType=BOOLEAN},#{businessTime,jdbcType=BIGINT},
+        #{createTime,jdbcType=BIGINT},#{updateTime,jdbcType=BIGINT})
+    </insert>
+
+    <update id="updateById" parameterType="org.example.todo.domain.entity.Business">
+        update t_business
+        <set>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="description != null">
+                description = #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="isEnd != null">
+                isEnd = #{isEnd,jdbcType=BOOLEAN},
+            </if>
+            <if test="isDelete != null">
+                isDelete = #{isDelete,jdbcType=BOOLEAN},
+            </if>
+            <if test="businessTime != null">
+                business_time = #{businessTime,jdbcType=BIGINT},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime,jdbcType=BIGINT},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime,jdbcType=BIGINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+    <update id="deleteById" parameterType="java.lang.Long">
+        update t_business
+        <set>
+            isDelete = true,
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+
+
+
+
+</mapper>

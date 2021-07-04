@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.example.todo.domain.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="org.example.todo.domain.entity.User">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="user_name" jdbcType="VARCHAR" property="userName" />
+        <result column="pass_word" jdbcType="VARCHAR" property="passWord" />
+        <result column="isAdmin" jdbcType="BOOLEAN" property="isAdmin" />
+        <result column="inUse" jdbcType="BOOLEAN" property="inUse" />
+        <result column="create_time" jdbcType="BIGINT" property="createTime" />
+        <result column="update_time" jdbcType="BIGINT" property="updateTime" />
+    </resultMap>
+    <select id="selectById" resultMap="BaseResultMap">
+        select  *
+        from t_user
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByName" resultMap="BaseResultMap">
+        select  *
+        from t_user
+        where user_name = #{userName,jdbcType=VARCHAR}
+    </select>
+
+
+</mapper>
